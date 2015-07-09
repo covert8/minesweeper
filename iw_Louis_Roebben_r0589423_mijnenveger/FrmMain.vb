@@ -2,7 +2,7 @@
     'Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
     Dim oRooster(7, 7) As Button
     Dim iTime As Long = 0
-    Dim iUnturned
+    Dim iFlagged As Integer = 10
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For iRij As Integer = oRooster.GetLowerBound(0) To oRooster.GetUpperBound(0)
             For iKolom As Integer = oRooster.GetLowerBound(1) To oRooster.GetUpperBound(1)
@@ -11,7 +11,7 @@
                 oRooster(iRij, iKolom).Size = New Size(50, 50)
                 oRooster(iRij, iKolom).TextAlign = ContentAlignment.MiddleCenter
                 oRooster(iRij, iKolom).Font = New Font("Arial", 12, FontStyle.Bold)
-                oRooster(iRij, iKolom).Name = "cLbl_" & iRij & "," & iKolom
+                oRooster(iRij, iKolom).Name = "cLbl_" & iRij & "_" & iKolom
                 'voor herinterpretatie vatbaar
                 'x,y locatie in het venster
                 Dim iXLocatie, iYLocatie As Integer
@@ -29,13 +29,14 @@
 
                 'Voor ieder klikbaar Label:
                 'linker klik
-                AddHandler oRooster(iRij, iKolom).Click, AddressOf FncOnLabelClick
+                AddHandler oRooster(iRij, iKolom).MouseDown, AddressOf FncOnLabelClick
             Next
         Next
         Timer1.Start()
         'verstop 10 mijnen
+        lblMines.Text = "Mines Left: " & iFlagged
         FncVerstopMijnen()
-
+        FncBerekenGetallen()
     End Sub
     Private Sub FncVerstopMijnen()
         Dim rand As Random = New Random
@@ -63,7 +64,8 @@
         For iRij As Integer = i - 1 To i + 1
             For iKolom As Integer = j - 1 To j + 1
                 If (FncCheckCoord(iRij, iKolom)) Then
-                    If(oRooster(iRij,iKolom).Tag == -1) iSom += 1
+                    If (oRooster(iRij, iKolom).Tag = -1) Then
+                        iSom += 1
                     End If
                 End If
             Next
@@ -71,26 +73,61 @@
         Return iSom
     End Function
     Private Function FncCheckCoord(i As Integer, j As Integer)
-        If (i < 0 Or i > 8) Then Return False
-        If (j < 0 Or j > 8) Then Return False
-        Return True
+        If (i < 0 Or i > 7) Then
+            Return False
+        ElseIf (j < 0 Or j > 7) Then
+            Return False
+        Else
+            Return True
+        End If
     End Function
 
     Private Sub FncOnLabelClick(ByVal sender As Button, ByVal e As MouseEventArgs)
         If (e.Button = Windows.Forms.MouseButtons.Left) Then
-            If (sender.Text = "X") Then Return
+            If (sender.Text = "X?") Then Return
             If (sender.Tag = -1) Then
+                sender.Text = "X"
                 FncGameOver()
             Else
                 sender.Text = sender.Tag
+                If (sender.Tag = 0) Then
+                    Dim strSplit() As String = sender.Name.Split("_")
+                    FncRevealNeighbours(strSplit(1), strSplit(2))
+                End If
+
             End If
         ElseIf (e.Button = Windows.Forms.MouseButtons.Right) Then
-
+            If (sender.Text = "" And iFlagged > 0) Then
+                sender.Text = "X?"
+                iFlagged -= 1
+                lblMines.Text = "Mines Left :" & iFlagged
+            ElseIf (sender.Text = "X?") Then
+                iFlagged += 1
+                sender.Text = ""
+            Else
+                MessageBox.Show("Too many flags")
+            End If
+            lblMines.Text = "Mines Left :" & iFlagged
         Else
-
+                MessageBox.Show("invalid button")
         End If
 
 
+    End Sub
+    Private Sub FncRevealNeighbours(i As Integer, j As Integer)
+        Dim iSom As Integer
+        For iRij As Integer = i - 1 To i + 1
+            For iKolom As Integer = j - 1 To j + 1
+                If (FncCheckCoord(iRij, iKolom)) Then
+                    If (oRooster(iRij, iKolom).Tag = 0 And oRooster(iRij, iKolom).Text <> "0") Then
+                        oRooster(iRij, iKolom).Text = 0
+                        FncRevealNeighbours(iRij, iKolom)
+                    ElseIf (oRooster(iRij, iKolom).Tag > 0) Then
+                        oRooster(iRij, iKolom).Text = oRooster(iRij, iKolom).Tag
+                    End If
+                End If
+            Next
+        Next
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -99,6 +136,7 @@
     End Sub
 
     Private Sub FncGameOver()
-
+        Timer1.Stop()
+        'FncToHighscore()
     End Sub
 End Class
