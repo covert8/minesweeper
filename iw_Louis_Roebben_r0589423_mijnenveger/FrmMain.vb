@@ -2,7 +2,9 @@
     'Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
     Dim oRooster(7, 7) As Button
     Dim iTime As Long = 0
-    Dim iFlagged As Integer = 10
+    Dim iAantalMijnen As Integer = 10
+    Dim iFlagged As Integer = iAantalMijnen
+    Dim iUnturned As Integer = oRooster.Length
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For iRij As Integer = oRooster.GetLowerBound(0) To oRooster.GetUpperBound(0)
             For iKolom As Integer = oRooster.GetLowerBound(1) To oRooster.GetUpperBound(1)
@@ -41,11 +43,13 @@
     Private Sub FncVerstopMijnen()
         Dim rand As Random = New Random
         Dim iRij, iKolom As Integer
-        For i As Integer = 0 To 9
+        'creer #mijnen
+        For i As Integer = 0 To iAantalMijnen - 1
             iRij = rand.Next(oRooster.GetLowerBound(0), oRooster.GetUpperBound(0))
             iKolom = rand.Next(oRooster.GetLowerBound(0), oRooster.GetUpperBound(0))
+            'als gekozen plaats al een mijn heeft verhoog het aantal te verstoppen mijnen met 1
             If (oRooster(iRij, iKolom).Tag = -1) Then i -= 1
-
+            'als bovenstaande fout is verstop mijn
             oRooster(iRij, iKolom).Tag = -1
         Next
     End Sub
@@ -87,8 +91,9 @@
             If (sender.Text = "X?") Then Return
             If (sender.Tag = -1) Then
                 sender.Text = "X"
-                FncGameOver()
+                FncGameOver(False)
             Else
+                iUnturned -= 1
                 sender.Text = sender.Tag
                 If (sender.Tag = 0) Then
                     Dim strSplit() As String = sender.Name.Split("_")
@@ -112,16 +117,21 @@
                 MessageBox.Show("invalid button")
         End If
 
+        'check if won
+        If (iUnturned = iAantalMijnen) Then FncGameOver(True)
 
     End Sub
     Private Sub FncRevealNeighbours(i As Integer, j As Integer)
+        'als aanliggende vakken 0 zijn -> draai ze dan om 
         Dim iSom As Integer
         For iRij As Integer = i - 1 To i + 1
             For iKolom As Integer = j - 1 To j + 1
                 If (FncCheckCoord(iRij, iKolom)) Then
+                    'als het geselecteerde vak 0 is en nog niet omgedraait -> draait deze om en doe hetzelfde voor dit vak
                     If (oRooster(iRij, iKolom).Tag = 0 And oRooster(iRij, iKolom).Text <> "0") Then
                         oRooster(iRij, iKolom).Text = 0
                         FncRevealNeighbours(iRij, iKolom)
+                        'als dit niet zo is draai deze om
                     ElseIf (oRooster(iRij, iKolom).Tag > 0) Then
                         oRooster(iRij, iKolom).Text = oRooster(iRij, iKolom).Tag
                     End If
@@ -135,8 +145,42 @@
         lblTime.Text = "Time: " & Int(iTime / 10) & "s"
     End Sub
 
-    Private Sub FncGameOver()
+    Private Sub FncGameOver(bWon As Boolean)
         Timer1.Stop()
-        'FncToHighscore()
+        MessageBox.Show("The game has ended")
+        'if false then no highscore
+        If (iTime <> FncGetLowestHighScore(iTime)) Then
+            DataSet1.tblHighScore.
+        End If
+
+        Dim strName As String
+        strName = InputBox("please give your name", "Highscore", "")
+        FncToHighScore(strName, iTime)
+    End Sub
+    Private Function FncGetLowestHighScore(iScore As Long)
+        Dim iLowestValue As Long = Long.MaxValue
+        Dim iCurrentValue As Long
+        For i As Integer = 0 To DataSet1.tblHighScore.Columns.Count - 1
+            iCurrentValue = DataSet1.tblHighScore.Compute("", "MIN(i)")
+            If iCurrentValue < iLowestValue Then iLowestValue = iCurrentValue
+        Next
+        If iScore > iLowestValue Then Return iLowestValue
+        Return iScore
+    End Function
+    Private Sub FncRemoveRow(iValue As Long)
+        For i As Integer = 0 To DataSet1.tblHighScore.Columns.Count - 1
+            DataSet1.tblHighScore.fldScoreColumn.
+        Next()
+    End Sub
+
+    Private Sub FncToHighScore(strName As String, iScore As Integer)
+
+
+        Dim newHighScoreRow As DataRow = DataSet1.Tables("tblHighScore").NewRow()
+
+        newHighScoreRow("fldName") = "ALFKI"
+        newHighScoreRow("fldScore") = 1
+
+        DataSet1.Tables("tblHighScore").Rows.Add(newHighScoreRow)
     End Sub
 End Class

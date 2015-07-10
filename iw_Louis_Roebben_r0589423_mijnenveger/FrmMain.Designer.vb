@@ -26,10 +26,18 @@ Partial Class FrmMain
         Me.Button1 = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.lblMines = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.lblTime = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblTime = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.DataSet1 = New iw_Louis_Roebben_r0589423_mijnenveger.DataSet1()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.TblHighScoreBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.FldNameDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.FldScoreDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.StatusStrip1.SuspendLayout()
+        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TblHighScoreBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
@@ -56,8 +64,11 @@ Partial Class FrmMain
         Me.lblMines.Size = New System.Drawing.Size(129, 25)
         Me.lblMines.Text = "Mines Left : XX"
         '
-        'Timer1
+        'ToolStripStatusLabel1
         '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(835, 25)
+        Me.ToolStripStatusLabel1.Spring = True
         '
         'lblTime
         '
@@ -66,11 +77,48 @@ Partial Class FrmMain
         Me.lblTime.Size = New System.Drawing.Size(89, 25)
         Me.lblTime.Text = "Time: XXs"
         '
-        'ToolStripStatusLabel1
+        'Timer1
         '
-        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(804, 25)
-        Me.ToolStripStatusLabel1.Spring = True
+        '
+        'DataSet1
+        '
+        Me.DataSet1.DataSetName = "DataSet1"
+        Me.DataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.AllowUserToAddRows = False
+        Me.DataGridView1.AllowUserToDeleteRows = False
+        Me.DataGridView1.AutoGenerateColumns = False
+        Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.FldNameDataGridViewTextBoxColumn, Me.FldScoreDataGridViewTextBoxColumn})
+        Me.DataGridView1.DataSource = Me.TblHighScoreBindingSource1
+        Me.DataGridView1.Location = New System.Drawing.Point(817, 81)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.ReadOnly = True
+        Me.DataGridView1.RowTemplate.Height = 28
+        Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.DataGridView1.Size = New System.Drawing.Size(240, 150)
+        Me.DataGridView1.TabIndex = 2
+        '
+        'TblHighScoreBindingSource1
+        '
+        Me.TblHighScoreBindingSource1.DataMember = "tblHighScore"
+        Me.TblHighScoreBindingSource1.DataSource = Me.DataSet1
+        '
+        'FldNameDataGridViewTextBoxColumn
+        '
+        Me.FldNameDataGridViewTextBoxColumn.DataPropertyName = "fldName"
+        Me.FldNameDataGridViewTextBoxColumn.HeaderText = "fldName"
+        Me.FldNameDataGridViewTextBoxColumn.Name = "FldNameDataGridViewTextBoxColumn"
+        '
+        'FldScoreDataGridViewTextBoxColumn
+        '
+        Me.FldScoreDataGridViewTextBoxColumn.DataPropertyName = "fldScore"
+        Me.FldScoreDataGridViewTextBoxColumn.HeaderText = "fldScore"
+        Me.FldScoreDataGridViewTextBoxColumn.Name = "FldScoreDataGridViewTextBoxColumn"
         '
         'FrmMain
         '
@@ -78,12 +126,16 @@ Partial Class FrmMain
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(1068, 707)
+        Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.Button1)
         Me.Name = "FrmMain"
         Me.Text = "FrmMain"
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
+        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TblHighScoreBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -94,5 +146,10 @@ Partial Class FrmMain
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents lblTime As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents DataSet1 As iw_Louis_Roebben_r0589423_mijnenveger.DataSet1
+    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents FldNameDataGridViewTextBoxColumn As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents FldScoreDataGridViewTextBoxColumn As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents TblHighScoreBindingSource1 As System.Windows.Forms.BindingSource
 
 End Class
