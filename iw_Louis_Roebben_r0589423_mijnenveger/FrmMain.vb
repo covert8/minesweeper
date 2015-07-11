@@ -5,6 +5,8 @@
     Dim iAantalMijnen As Integer = 10
     Dim iFlagged As Integer = iAantalMijnen
     Dim iUnturned As Integer = oRooster.Length
+    Dim blnGamemover As Boolean = False
+
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For iRij As Integer = oRooster.GetLowerBound(0) To oRooster.GetUpperBound(0)
             For iKolom As Integer = oRooster.GetLowerBound(1) To oRooster.GetUpperBound(1)
@@ -87,6 +89,9 @@
     End Function
 
     Private Sub FncOnLabelClick(ByVal sender As Button, ByVal e As MouseEventArgs)
+        'game over
+        If (blnGamemover) Then Return
+
         If (e.Button = Windows.Forms.MouseButtons.Left) Then
             If (sender.Text = "X?") Then Return
             If (sender.Tag = -1) Then
@@ -114,7 +119,7 @@
             End If
             lblMines.Text = "Mines Left :" & iFlagged
         Else
-                MessageBox.Show("invalid button")
+            MessageBox.Show("invalid button")
         End If
 
         'check if won
@@ -146,31 +151,23 @@
     End Sub
 
     Private Sub FncGameOver(bWon As Boolean)
+        blnGamemover = True
         Timer1.Stop()
         MessageBox.Show("The game has ended")
-        'if false then no highscore
-        If (iTime <> FncGetLowestHighScore(iTime)) Then
-            DataSet1.tblHighScore.
-        End If
 
-        Dim strName As String
-        strName = InputBox("please give your name", "Highscore", "")
-        FncToHighScore(strName, iTime)
+        FncCheckAndReplace(iTime)
+        DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
     End Sub
-    Private Function FncGetLowestHighScore(iScore As Long)
-        Dim iLowestValue As Long = Long.MaxValue
-        Dim iCurrentValue As Long
-        For i As Integer = 0 To DataSet1.tblHighScore.Columns.Count - 1
-            iCurrentValue = DataSet1.tblHighScore.Compute("", "MIN(i)")
-            If iCurrentValue < iLowestValue Then iLowestValue = iCurrentValue
+
+    Private Sub FncCheckAndReplace(iScore As Long)
+        FncToHighScore(InputBox("please give your name", "Highscore", ""), iScore)
+        Dim currentLaagste As DataSet1.tblHighScoreRow
+        currentLaagste.fldScore = Long.MaxValue
+        For Each dr As DataSet1.tblHighScoreRow In DataSet1.tblHighScore.Rows
+            If (dr.fldScore < currentLaagste.fldScore) Then currentLaagste = dr
         Next
-        If iScore > iLowestValue Then Return iLowestValue
-        Return iScore
-    End Function
-    Private Sub FncRemoveRow(iValue As Long)
-        For i As Integer = 0 To DataSet1.tblHighScore.Columns.Count - 1
-            DataSet1.tblHighScore.fldScoreColumn.
-        Next()
+        currentLaagste.Delete()
+
     End Sub
 
     Private Sub FncToHighScore(strName As String, iScore As Integer)
@@ -178,9 +175,31 @@
 
         Dim newHighScoreRow As DataRow = DataSet1.Tables("tblHighScore").NewRow()
 
-        newHighScoreRow("fldName") = "ALFKI"
-        newHighScoreRow("fldScore") = 1
+        newHighScoreRow("fldName") = strName
+        newHighScoreRow("fldScore") = iScore
 
         DataSet1.Tables("tblHighScore").Rows.Add(newHighScoreRow)
+    End Sub
+
+    Private Sub btnRestart_Click(sender As Object, e As EventArgs) Handles btnRestart.Click
+        blnGamemover = False
+        iTime = 0
+        Timer1.Start()
+        FncCleanVeld()
+        'verstop 10 mijnen
+        iFlagged = iAantalMijnen
+        lblMines.Text = "Mines Left: " & iFlagged
+        FncVerstopMijnen()
+        FncBerekenGetallen()
+        'order dataset
+    End Sub
+
+    Private Sub FncCleanVeld()
+        For i As Integer = oRooster.GetLowerBound(0) To oRooster.GetUpperBound(0)
+            For j As Integer = oRooster.GetLowerBound(1) To oRooster.GetUpperBound(0)
+                oRooster(i, j).Tag = vbEmpty
+                oRooster(i, j).Text = String.Empty
+            Next
+        Next
     End Sub
 End Class
