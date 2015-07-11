@@ -1,10 +1,13 @@
 ﻿Public Class FrmMain
+    'debug mode
+    Dim bDebug As Boolean = True
+
+
     'Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
     Dim oRooster(7, 7) As Button
-    Dim iTime As Long = 0
+    Dim iTime As Double = 0
     Dim iAantalMijnen As Integer = 10
     Dim iFlagged As Integer = iAantalMijnen
-    Dim iUnturned As Integer = oRooster.Length
     Dim blnGamemover As Boolean = False
 
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -52,6 +55,7 @@
             'als gekozen plaats al een mijn heeft verhoog het aantal te verstoppen mijnen met 1
             If (oRooster(iRij, iKolom).Tag = -1) Then i -= 1
             'als bovenstaande fout is verstop mijn
+            If (bDebug) Then oRooster(iRij, iKolom).Text = "H"
             oRooster(iRij, iKolom).Tag = -1
         Next
     End Sub
@@ -98,7 +102,6 @@
                 sender.Text = "X"
                 FncGameOver(False)
             Else
-                iUnturned -= 1
                 sender.Text = sender.Tag
                 If (sender.Tag = 0) Then
                     Dim strSplit() As String = sender.Name.Split("_")
@@ -123,8 +126,15 @@
         End If
 
         'check if won
-        If (iUnturned = iAantalMijnen) Then FncGameOver(True)
+        FncCheckWinState()
 
+    End Sub
+    Private Sub FncCheckWinState()
+        Dim iUnturned As Integer = oRooster.Length
+        For Each bt As Button In oRooster
+            If (bt.Text <> bt.Tag.ToString) Then iUnturned -= 1
+        Next
+        If (iUnturned = oRooster.Length - iAantalMijnen) Then FncGameOver(True)
     End Sub
     Private Sub FncRevealNeighbours(i As Integer, j As Integer)
         'als aanliggende vakken 0 zijn -> draai ze dan om 
@@ -146,27 +156,28 @@
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        iTime += 1
-        lblTime.Text = "Time: " & Int(iTime / 10) & "s"
+        iTime += 0.1
+        lblTime.Text = "Time: " & iTime & "s"
     End Sub
 
     Private Sub FncGameOver(bWon As Boolean)
         blnGamemover = True
         Timer1.Stop()
         MessageBox.Show("The game has ended")
-
+        If (bWon = False) Then Return
         FncCheckAndReplace(iTime)
         DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
     End Sub
 
-    Private Sub FncCheckAndReplace(iScore As Long)
+    Private Sub FncCheckAndReplace(iScore As Double)
         FncToHighScore(InputBox("please give your name", "Highscore", ""), iScore)
-        Dim currentLaagste As DataSet1.tblHighScoreRow
-        currentLaagste.fldScore = Long.MaxValue
+        If (DataSet1.tblHighScore.Rows.Count < 4) Then Return
+        Dim currentHoogste As DataSet1.tblHighScoreRow = DataSet1.tblHighScore.Rows(0)
+        currentHoogste.fldScore = Double.MaxValue
         For Each dr As DataSet1.tblHighScoreRow In DataSet1.tblHighScore.Rows
-            If (dr.fldScore < currentLaagste.fldScore) Then currentLaagste = dr
+            If (dr.fldScore < currentHoogste.fldScore) Then currentHoogste = dr
         Next
-        currentLaagste.Delete()
+        currentHoogste.Delete()
 
     End Sub
 
@@ -201,5 +212,10 @@
                 oRooster(i, j).Text = String.Empty
             Next
         Next
+    End Sub
+
+    Private Sub btnResetHighScore_Click(sender As Object, e As EventArgs) Handles btnResetHighScore.Click
+        DataSet1.tblHighScore.Rows.Clear()
+        MessageBox.Show("Highscore table cleared")
     End Sub
 End Class

@@ -30,10 +30,11 @@ Partial Class FrmMain
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.DataSet1 = New iw_Louis_Roebben_r0589423_mijnenveger.DataSet1()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TblHighScoreBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.DataSet1BindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnResetHighScore = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,20 +99,6 @@ Partial Class FrmMain
         Me.DataGridView1.Size = New System.Drawing.Size(318, 488)
         Me.DataGridView1.TabIndex = 2
         '
-        'DataGridViewTextBoxColumn1
-        '
-        Me.DataGridViewTextBoxColumn1.DataPropertyName = "fldName"
-        Me.DataGridViewTextBoxColumn1.HeaderText = "fldName"
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        Me.DataGridViewTextBoxColumn2.DataPropertyName = "fldScore"
-        Me.DataGridViewTextBoxColumn2.HeaderText = "fldScore"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        '
         'TblHighScoreBindingSource1
         '
         Me.TblHighScoreBindingSource1.DataMember = "tblHighScore"
@@ -122,12 +109,36 @@ Partial Class FrmMain
         Me.DataSet1BindingSource.DataSource = Me.DataSet1
         Me.DataSet1BindingSource.Position = 0
         '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.DataPropertyName = "fldName"
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Name"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.DataPropertyName = "fldScore"
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Score"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        '
+        'btnResetHighScore
+        '
+        Me.btnResetHighScore.Location = New System.Drawing.Point(839, 572)
+        Me.btnResetHighScore.Name = "btnResetHighScore"
+        Me.btnResetHighScore.Size = New System.Drawing.Size(218, 37)
+        Me.btnResetHighScore.TabIndex = 3
+        Me.btnResetHighScore.Text = "Reset Highscore"
+        Me.btnResetHighScore.UseVisualStyleBackColor = True
+        '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(1068, 688)
+        Me.Controls.Add(Me.btnResetHighScore)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.btnRestart)
@@ -155,8 +166,9 @@ Partial Class FrmMain
     Friend WithEvents FldNameDataGridViewTextBoxColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents FldScoreDataGridViewTextBoxColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TblHighScoreBindingSource1 As System.Windows.Forms.BindingSource
+    Friend WithEvents DataSet1BindingSource As System.Windows.Forms.BindingSource
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents DataSet1BindingSource As System.Windows.Forms.BindingSource
+    Friend WithEvents btnResetHighScore As System.Windows.Forms.Button
 
 End Class

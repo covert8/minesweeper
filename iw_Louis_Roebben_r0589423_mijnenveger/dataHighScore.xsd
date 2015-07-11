@@ -12,11 +12,11 @@
   <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="tblHighScore" msprop:Generator_TableClassName="tblHighScoreDataTable" msprop:Generator_TableVarName="tabletblHighScore" msprop:Generator_TablePropName="tblHighScore" msprop:Generator_RowDeletingName="tblHighScoreRowDeleting" msprop:Generator_RowChangingName="tblHighScoreRowChanging" msprop:Generator_RowEvHandlerName="tblHighScoreRowChangeEventHandler" msprop:Generator_RowDeletedName="tblHighScoreRowDeleted" msprop:Generator_UserTableName="tblHighScore" msprop:Generator_RowChangedName="tblHighScoreRowChanged" msprop:Generator_RowEvArgName="tblHighScoreRowChangeEvent" msprop:Generator_RowClassName="tblHighScoreRow">
+        <xs:element name="tblHighScore" msprop:Generator_TableClassName="tblHighScoreDataTable" msprop:Generator_TableVarName="tabletblHighScore" msprop:Generator_RowChangedName="tblHighScoreRowChanged" msprop:Generator_TablePropName="tblHighScore" msprop:Generator_RowDeletingName="tblHighScoreRowDeleting" msprop:Generator_RowChangingName="tblHighScoreRowChanging" msprop:Generator_RowEvHandlerName="tblHighScoreRowChangeEventHandler" msprop:Generator_RowDeletedName="tblHighScoreRowDeleted" msprop:Generator_RowClassName="tblHighScoreRow" msprop:Generator_UserTableName="tblHighScore" msprop:Generator_RowEvArgName="tblHighScoreRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="fldName" msprop:Generator_ColumnVarNameInTable="columnfldName" msprop:Generator_ColumnPropNameInRow="fldName" msprop:Generator_ColumnPropNameInTable="fldNameColumn" msprop:Generator_UserColumnName="fldName" type="xs:string" minOccurs="0" />
-              <xs:element name="fldScore" msprop:Generator_ColumnVarNameInTable="columnfldScore" msprop:Generator_ColumnPropNameInRow="fldScore" msprop:Generator_ColumnPropNameInTable="fldScoreColumn" msprop:Generator_UserColumnName="fldScore" type="xs:string" minOccurs="0" />
+              <xs:element name="fldScore" msprop:Generator_ColumnVarNameInTable="columnfldScore" msprop:Generator_ColumnPropNameInRow="fldScore" msprop:Generator_ColumnPropNameInTable="fldScoreColumn" msprop:Generator_UserColumnName="fldScore" type="xs:double" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

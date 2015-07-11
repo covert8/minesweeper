@@ -375,7 +375,7 @@ Partial Public Class DataSet1
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
-        Public Overloads Function AddtblHighScoreRow(ByVal fldName As String, ByVal fldScore As String) As tblHighScoreRow
+        Public Overloads Function AddtblHighScoreRow(ByVal fldName As String, ByVal fldScore As Double) As tblHighScoreRow
             Dim rowtblHighScoreRow As tblHighScoreRow = CType(Me.NewRow, tblHighScoreRow)
             Dim columnValuesArray() As Object = New Object() {fldName, fldScore}
             rowtblHighScoreRow.ItemArray = columnValuesArray
@@ -409,7 +409,7 @@ Partial Public Class DataSet1
         Private Sub InitClass()
             Me.columnfldName = New Global.System.Data.DataColumn("fldName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnfldName)
-            Me.columnfldScore = New Global.System.Data.DataColumn("fldScore", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnfldScore = New Global.System.Data.DataColumn("fldScore", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnfldScore)
         End Sub
 
@@ -572,15 +572,15 @@ Partial Public Class DataSet1
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
-        Public Property fldScore() As String
+        Public Property fldScore() As Double
             Get
                 Try
-                    Return CType(Me(Me.tabletblHighScore.fldScoreColumn), String)
+                    Return CType(Me(Me.tabletblHighScore.fldScoreColumn), Double)
                 Catch e As Global.System.InvalidCastException
                     Throw New Global.System.Data.StrongTypingException("The value for column 'fldScore' in table 'tblHighScore' is DBNull.", e)
                 End Try
             End Get
-            Set(value As String)
+            Set(value As Double)
                 Me(Me.tabletblHighScore.fldScoreColumn) = value
             End Set
         End Property
