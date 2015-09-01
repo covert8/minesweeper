@@ -2,12 +2,13 @@
     'debug mode
     Dim bDebug As Boolean = True
 
-    'Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
-    Dim oRooster(7, 7) As Button
+    '-- ONGELDIG --Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
+    'Matrix van 5 breed (o tot em met 4) en 5 hoog (0 tot em met 4)
+    Dim oRooster(4, 4) As Button
     'tijd hoelang het spel bezig is
     Dim iTime As Double = 0
     'het aantal mijnen dat er verspopt mogen worden
-    Dim iAantalMijnen As Integer = 10
+    Dim iAantalMijnen As Integer = 4 ' 4 mijnen
     'het aan vlaggen dat er mogen gezet worden
     Dim iFlagged As Integer = iAantalMijnen
     'een bool of het spel over is
