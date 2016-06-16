@@ -4,7 +4,7 @@
 
     '-- ONGELDIG --Matrix van 8 breed (0 tot en met 7) en 8 hoog (0 tot en met 7)
     'Matrix van 5 breed (o tot em met 4) en 5 hoog (0 tot em met 4)
-    Dim oRooster(4, 4) As Button
+    Dim oRooster(8, 8) As Button
     'tijd hoelang het spel bezig is
     Dim iTime As Double = 0
     'het aantal mijnen dat er verspopt mogen worden
@@ -13,6 +13,8 @@
     Dim iFlagged As Integer = iAantalMijnen
     'een bool of het spel over is
     Dim blnGamemover As Boolean = False
+    'joke
+    Dim bJoker As Boolean = True
 
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'verwijderen van selectie hearder in de datagridview
@@ -48,10 +50,24 @@
         Next
         'start de spel timer
         Timer1.Start()
+        'vraag mijnen 
+        FncVraagMijnen()
         'verstop 10 mijnen
         lblMines.Text = "Mines Left: " & iFlagged
         FncVerstopMijnen()
         FncBerekenGetallen()
+    End Sub
+
+    Private Sub FncVraagMijnen()
+        Dim ivoorstel
+        'assert hoogte = breete !
+        While (ivoorstel > oRooster.Length / 2 Or ivoorstel < 1)
+opnieuw:    ivoorstel = InputBox("please give the number of mines", "mines:", "5")
+            If Not IsNumeric(ivoorstel) Then
+                GoTo opnieuw
+            End If
+        End While
+        iAantalMijnen = ivoorstel
     End Sub
     Private Sub FncVerstopMijnen()
         Dim rand As Random = New Random
@@ -112,11 +128,21 @@
         'als linkermuisknop klik
         If (e.Button = Windows.Forms.MouseButtons.Left) Then
             'als er een flag op staat -> mag er niet op geklikt worden
-            If (sender.Text = "X?") Then Return
+            If (sender.Text = "X?" Or sender.BackColor = Color.Red) Then Return
             'als er een mijn onder de knop ligt -> draai deze om en game over (verloren)
             If (sender.Tag = -1) Then
                 sender.Text = "X"
-                FncGameOver(False)
+                'als heeft nog joker
+                If (bJoker) Then
+                    bJoker = False
+                    Application.DoEvents()
+                    System.Threading.Thread.Sleep(3000)
+                    MessageBox.Show("Joker used")
+                    sender.BackColor = Color.Red
+                Else
+                    'anders game over
+                    FncGameOver(False)
+                End If
             Else
                 'als er geen mijn onder de knop ligt -> draai de waarde om 
                 sender.Text = sender.Tag
@@ -225,6 +251,9 @@
     End Sub
 
     Private Sub btnRestart_Click(sender As Object, e As EventArgs) Handles btnRestart.Click
+        'voor voor mijnen
+        FncVraagMijnen()
+
         'restart de game
         blnGamemover = False
         iTime = 0
@@ -243,6 +272,7 @@
             For j As Integer = oRooster.GetLowerBound(1) To oRooster.GetUpperBound(0)
                 oRooster(i, j).Tag = vbEmpty
                 oRooster(i, j).Text = String.Empty
+                oRooster(i, j).BackColor = Color.Gray
             Next
         Next
     End Sub
